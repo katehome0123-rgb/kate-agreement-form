@@ -160,4 +160,330 @@
                 <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・工事が始まる頃に材料を塗料メーカーから発送いたします。（ご自宅の敷地内に保管しておいてください）</div></label>
                 <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・工事で発生しましたゴミなどは足場解体後に行います。</div></label>
                 <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・雨の日はできる作業を行うか、様子を見て工事を行うか、休工になる場合があります。いずれも柔軟な対応させて頂きます。※当日の朝判断もあります。</div></label>
-                <label class="item"><input type="checkbox"
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・工事中の資材などは基本的にはお客様の敷地で工事中管理させて頂きます。ご自宅のガレージやスペースをネタ場（作業場）としてお借りします。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・余ったペンキは缶やペットボトルに入れて残しております。（陽の当たりづらい場所で保管お願いいたします。）</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・日曜日は状況に応じて工事を進めさせて頂く場合があります。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・高圧洗浄をする際に土間のタイルやガレージ等のコンクリートまで洗浄致します。濡れたり汚れたら困るものはない状態にして下さい。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・玄関の土間タイルがすでに割れていた場合は高圧洗浄すると割れる可能性があります。当日判断で洗浄するかしないかを判断させていただく場合が御座います。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・外壁材がかなり劣化していた場合、高圧洗浄すると傷んだ塗膜が飛ぶ(剥がれる)場合が御座います。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・付帯部塗装や防水工事の際にはシンナーの臭いが室内に入る場合がございます。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・防水工事を行った場合、施工後は撥水されてるので雨が防水の上に溜まります。また、雨の後は滑りやすくなっております。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・サイディングの外壁材の場合、ボードの湿気を逃がすため若干隙間をあけて施工致します。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・雨の日が続いてしまうと想定の工期が伸びることが予想されます。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・工事は基本的にはAM8：30～日暮れ頃まで行いますが、施工の内容によっては朝だけの作業であったり午後の少しだけの作業の場合があります。</div></label>
+
+                <div class="section-title">スケジュール・移動に関する重要事項</div>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・足場を組んだ翌日には高圧洗浄を致しますのでシャッターや雨戸は動くようにして頂き、ガラスの窓は鍵をしっかりかけて下さい。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・工事が始まるとほとんどの期間は室内干しのご協力をお願い致します。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・洗浄の日は散水栓のハンドルはつけた状態にしておいて下さい。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・足場組みの日は朝8時までには車の移動をお願い致します。</div></label>
+                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・高圧洗浄の日は朝8時半までには車の移動をお願い致します。</div></label>
+
+                <div class="section-title danger">安全に関する最重要事項</div>
+                <label class="danger-item"><input type="checkbox" class="required-check"><div class="danger-text">大変危険なので足場には登らないようにして下さい。</div></label>
+
+                <div class="section-title">施工主様ご署名</div>
+                <div style="margin-top:15px;">
+                    <label style="font-size:14px; font-weight:700;">ご署名（お名前をご入力ください）</label>
+                    <input type="text" id="clientName" class="input-name" required>
+                </div>
+
+                <div style="margin-top:20px;">
+                    <label style="font-size:14px; font-weight:700;">手書きサイン（枠内に指やペンでご署名ください）</label>
+                    <div class="signature-area">
+                        <canvas id="signaturePad"></canvas>
+                        <img id="compiledSignatureImg" alt="手書きサイン">
+                        <button type="button" class="canvas-btn" id="clearBtn">サインを消す</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group">
+            <button type="button" id="saveBtn" class="action-btn" disabled>同意して保存する</button>
+        </div>
+    </section>
+
+    <section id="listScreen" class="screen">
+        <div class="list-header">
+            <h2>保存済み同意書</h2>
+            <label class="import-btn" for="importInput">PDFを取り込む</label>
+            <input type="file" id="importInput" accept="application/pdf" hidden>
+        </div>
+        <div id="agreementList"></div>
+    </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const screens = { form: document.getElementById('formScreen'), list: document.getElementById('listScreen') };
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            Object.values(screens).forEach(s => s.classList.remove('active'));
+            screens[btn.dataset.tab].classList.add('active');
+            if (btn.dataset.tab === 'list') renderList();
+        });
+    });
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    const DB_NAME = 'kate_agreements_db';
+    const STORE_NAME = 'agreements';
+
+    function openDB() {
+        return new Promise((resolve, reject) => {
+            const req = indexedDB.open(DB_NAME, 1);
+            req.onupgradeneeded = (e) => {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains(STORE_NAME)) {
+                    db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                }
+            };
+            req.onsuccess = (e) => resolve(e.target.result);
+            req.onerror = (e) => reject(e.target.error);
+        });
+    }
+    async function dbPut(record) {
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(STORE_NAME, 'readwrite');
+            tx.objectStore(STORE_NAME).put(record);
+            tx.oncomplete = () => resolve();
+            tx.onerror = (e) => reject(e.target.error);
+        });
+    }
+    async function dbGetAll() {
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(STORE_NAME, 'readonly');
+            const req = tx.objectStore(STORE_NAME).getAll();
+            req.onsuccess = () => resolve(req.result.sort((a, b) => b.createdAt - a.createdAt));
+            req.onerror = (e) => reject(e.target.error);
+        });
+    }
+    async function dbDelete(id) {
+        const db = await openDB();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction(STORE_NAME, 'readwrite');
+            tx.objectStore(STORE_NAME).delete(id);
+            tx.oncomplete = () => resolve();
+            tx.onerror = (e) => reject(e.target.error);
+        });
+    }
+
+    let currentItems = [];
+
+    async function renderList() {
+        const listEl = document.getElementById('agreementList');
+        currentItems = await dbGetAll();
+        if (currentItems.length === 0) {
+            listEl.innerHTML = '<div class="empty-msg">まだ保存された同意書はありません。</div>';
+            return;
+        }
+        listEl.innerHTML = currentItems.map(item => `
+            <div class="agreement-card">
+                <div>
+                    <div class="agreement-name">${escapeHtml(item.clientName)} 様</div>
+                    <div class="agreement-date">${new Date(item.createdAt).toLocaleString('ja-JP')}</div>
+                </div>
+                <div class="agreement-actions">
+                    <button class="icon-btn share-btn" data-id="${item.id}">共有</button>
+                    <button class="icon-btn delete-btn" data-id="${item.id}">削除</button>
+                </div>
+            </div>
+        `).join('');
+
+        listEl.querySelectorAll('.share-btn').forEach(btn => btn.addEventListener('click', () => shareItem(btn.dataset.id)));
+        listEl.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', () => deleteItem(btn.dataset.id)));
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    async function shareItem(id) {
+        const item = currentItems.find(i => String(i.id) === String(id));
+        if (!item) return;
+        const file = new File([item.blob], item.filename, { type: 'application/pdf' });
+        try {
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                await navigator.share({ files: [file], title: item.filename, text: item.clientName + ' 様の同意書PDFです。' });
+            } else {
+                showToast('この端末は直接共有に対応していません');
+            }
+        } catch (e) {
+            /* ユーザーがキャンセルした場合などはここに来る（エラー表示不要） */
+        }
+    }
+
+    async function deleteItem(id) {
+        if (!confirm('この同意書を削除しますか？')) return;
+        await dbDelete(id);
+        showToast('削除しました');
+        renderList();
+    }
+
+    document.getElementById('importInput').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const rawName = file.name.replace(/\.pdf$/i, '');
+        const clientName = rawName.replace(/^KATE工事前同意書_?/, '').replace(/^ケイトホーム工事前同意書_?/, '') || '取り込んだ同意書';
+        await dbPut({
+            id: Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+            filename: file.name,
+            clientName: clientName,
+            createdAt: Date.now(),
+            blob: file
+        });
+        showToast('取り込みました');
+        renderList();
+        e.target.value = '';
+    });
+
+    const clientNameInput = document.getElementById('clientName');
+    const saveBtn = document.getElementById('saveBtn');
+    const canvas = document.getElementById('signaturePad');
+    const ctx = canvas.getContext('2d');
+    const clearBtn = document.getElementById('clearBtn');
+    const signatureImg = document.getElementById('compiledSignatureImg');
+
+    function resizeCanvas() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = 150;
+        ctx.lineWidth = 3;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = "#000";
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let drawing = false;
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+    canvas.addEventListener('mousedown', (e) => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); });
+    canvas.addEventListener('mousemove', (e) => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
+    canvas.addEventListener('mouseup', () => { drawing = false; checkFormValidity(); });
+    canvas.addEventListener('touchstart', (e) => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); });
+    canvas.addEventListener('touchmove', (e) => { if (!drawing) return; e.preventDefault(); const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); });
+    canvas.addEventListener('touchend', () => { drawing = false; checkFormValidity(); });
+
+    clearBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        signatureImg.style.display = "none";
+        canvas.style.display = "block";
+        checkFormValidity();
+    });
+
+    function checkFormValidity() {
+        const nameFilled = clientNameInput.value.trim() !== "";
+        const buffer = new Uint32Array(ctx.getImageData(0, 0, canvas.width, canvas.height).data.buffer);
+        const hasSignature = buffer.some(color => color !== 0);
+        saveBtn.disabled = !(nameFilled && hasSignature);
+    }
+
+    clientNameInput.addEventListener('input', checkFormValidity);
+
+    async function generatePDFData() {
+        const { jsPDF } = window.jspdf;
+        const element = document.getElementById('pdfContent');
+        const clearBtnEl = document.getElementById('clearBtn');
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const items = document.querySelectorAll('.item, .danger-item');
+
+        const originalScrollY = window.scrollY;
+        window.scrollTo(0, 0);
+
+        items.forEach(item => {
+            const cb = item.querySelector('input[type="checkbox"]');
+            const mark = document.createElement('span');
+            mark.className = 'pdf-check-mark';
+            mark.style.fontSize = '18px';
+            mark.style.fontWeight = 'bold';
+            mark.style.marginRight = '10px';
+            mark.style.color = item.classList.contains('danger-item') ? '#dc2626' : '#0f172a';
+            mark.innerText = cb.checked ? '☑' : '☐';
+            item.insertBefore(mark, item.firstChild);
+        });
+
+        const signatureDataURL = canvas.toDataURL('image/png');
+        signatureImg.src = signatureDataURL;
+        signatureImg.style.display = "block";
+        canvas.style.display = "none";
+
+        clearBtnEl.classList.add('hide-for-pdf');
+        checkboxes.forEach(cb => cb.classList.add('hide-for-pdf'));
+
+        await new Promise(resolve => setTimeout(resolve, 200));
+
+        const canvasImage = await html2canvas(element, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            scrollY: 0,
+            x: 0,
+            y: 0
+        });
+
+        const imgWidth = 210;
+        const imgHeight = (canvasImage.height * imgWidth) / canvasImage.width;
+
+        const pdf = new jsPDF('p', 'mm', [imgWidth, imgHeight]);
+        pdf.addImage(canvasImage.toDataURL('image/jpeg', 1.0), 'JPEG', 0, 0, imgWidth, imgHeight);
+        const filename = 'KATE工事前同意書_' + clientNameInput.value + '.pdf';
+
+        document.querySelectorAll('.pdf-check-mark').forEach(el => el.remove());
+        clearBtnEl.classList.remove('hide-for-pdf');
+        checkboxes.forEach(cb => cb.classList.remove('hide-for-pdf'));
+
+        signatureImg.style.display = "none";
+        canvas.style.display = "block";
+
+        window.scrollTo(0, originalScrollY);
+
+        return {
+            blob: pdf.output('blob'),
+            filename: filename
+        };
+    }
+
+    saveBtn.addEventListener('click', async () => {
+        saveBtn.innerText = "同意書を作成中...";
+        saveBtn.disabled = true;
+
+        try {
+            const pdfData = await generatePDFData();
+            await dbPut({
+                id: Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+                filename: pdfData.filename,
+                clientName: clientNameInput.value,
+                createdAt: Date.now(),
+                blob: pdfData.blob
+            });
+            showToast('保存しました。「保存済み一覧」から共有できます');
+            document.querySelector('.tab-btn[data-tab="list"]').click();
+        } catch (e) {
+            alert("PDFの作成に失敗しました。");
+        }
+
+        saveBtn.innerText = "同意して保存する";
+        checkFormValidity();
+    });
+</script>
+</body>
+</html>
