@@ -1,222 +1,3 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>KATE | 工事前の重要確認事項</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        *, *::before, *::after { box-sizing: border-box; }
-
-        :root {
-            --navy: #0f172a;
-            --navy-soft: #1e293b;
-            --accent: #0ea5e9;
-            --accent-dark: #0284c7;
-            --danger: #dc2626;
-            --danger-bg: #fef2f2;
-            --border: #e2e8f0;
-            --bg: #f1f5f9;
-            --text: #1e293b;
-            --text-muted: #64748b;
-        }
-
-        html, body { height: 100%; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 0;
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        .topbar {
-            background: var(--navy);
-            color: #fff;
-            padding: 16px 20px 0 20px;
-            position: sticky;
-            top: 0;
-            z-index: 20;
-        }
-        .brand {
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            color: #94a3b8;
-            margin-bottom: 12px;
-        }
-        .tabs { display: flex; gap: 4px; }
-        .tab-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            font-size: 14px;
-            font-weight: 700;
-            padding: 12px 8px;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-        }
-        .tab-btn.active { color: #fff; border-bottom-color: var(--accent); }
-
-        main { padding: 20px; max-width: 640px; margin: 0 auto; }
-
-        .screen { display: none; }
-        .screen.active { display: block; }
-
-        .container { background: #fff; padding: 24px; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-
-        h1 { font-size: 18px; color: var(--navy); text-align: center; margin: 0 0 14px 0; }
-        p.intro { font-size: 14px; line-height: 1.7; background: #f8fafc; padding: 16px; border-radius: 10px; border-left: 3px solid var(--accent); color: var(--text-muted); }
-
-        .section-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-top: 28px;
-            padding-left: 12px;
-            border-left: 4px solid var(--accent);
-        }
-        .section-title.danger { border-left-color: var(--danger); color: var(--danger); }
-
-        .item { display: flex; align-items: flex-start; margin: 12px 0; background: #f8fafc; padding: 12px; border-radius: 8px; cursor: pointer; }
-        .item input { margin-right: 12px; margin-top: 3px; transform: scale(1.2); accent-color: var(--accent); }
-        .item-text { font-size: 13.5px; line-height: 1.55; white-space: pre-wrap; color: var(--text); }
-        .item-title { font-weight: 700; display: block; margin-bottom: 2px; }
-
-        .danger-item { display: flex; align-items: flex-start; margin: 16px 0; background: var(--danger-bg); padding: 15px; border-radius: 10px; border: 1.5px solid #fecaca; cursor: pointer; }
-        .danger-item input { margin-right: 12px; margin-top: 5px; transform: scale(1.4); accent-color: var(--danger); }
-        .danger-text { color: var(--danger); font-size: 18px; font-weight: 700; line-height: 1.4; }
-
-        .signature-area { margin-top: 8px; position: relative; width: 100%; }
-        canvas { border: 2px dashed #cbd5e1; border-radius: 10px; background: #fff; width: 100%; height: 150px; touch-action: none; display: block; }
-        #compiledSignatureImg { border: 1px solid #cbd5e1; border-radius: 10px; background: #fff; width: 100%; height: 150px; display: none; object-fit: contain; }
-
-        .canvas-btn { display: block; width: 130px; background: #f1f5f9; color: var(--text-muted); padding: 9px 12px; font-size: 13px; font-weight: 700; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; margin-top: 10px; text-align: center; }
-        .canvas-btn:active { background: #e2e8f0; }
-
-        .input-name { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; margin-top: 6px; }
-
-        .btn-group { margin-top: 24px; }
-        .action-btn { width: 100%; padding: 17px; font-size: 15px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; background: var(--accent); color: #fff; }
-        .action-btn:disabled { background: #cbd5e1 !important; cursor: not-allowed; color: #fff !important; }
-
-        .hide-for-pdf { display: none !important; }
-
-        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 10px; }
-        .list-header h2 { font-size: 17px; color: var(--navy); margin: 0; }
-        .import-btn { background: var(--navy); color: #fff; font-size: 13px; font-weight: 700; padding: 10px 14px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
-
-        .empty-msg { color: var(--text-muted); font-size: 14px; text-align: center; padding: 40px 10px; }
-
-        .agreement-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-        .agreement-name { font-size: 15px; font-weight: 700; color: var(--navy); }
-        .agreement-date { font-size: 12.5px; color: var(--text-muted); margin-top: 3px; }
-        .agreement-actions { display: flex; gap: 8px; flex-shrink: 0; }
-        .icon-btn { border: none; border-radius: 8px; padding: 9px 13px; font-size: 12.5px; font-weight: 700; cursor: pointer; }
-        .share-btn { background: var(--accent); color: #fff; }
-        .delete-btn { background: #f1f5f9; color: var(--danger); }
-
-        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--navy); color: #fff; padding: 12px 20px; border-radius: 10px; font-size: 13.5px; font-weight: 700; z-index: 50; opacity: 0; transition: opacity 0.25s; pointer-events: none; }
-        .toast.show { opacity: 1; }
-    </style>
-</head>
-<body>
-
-<div class="topbar">
-    <div class="brand">KATE</div>
-    <div class="tabs">
-        <button class="tab-btn active" data-tab="form">同意書を作成</button>
-        <button class="tab-btn" data-tab="list">保存済み一覧</button>
-    </div>
-</div>
-
-<main>
-    <section id="formScreen" class="screen active">
-        <div class="container" id="pdfContent">
-            <h1>工事前の重要確認事項 同意システム</h1>
-            <p class="intro">工事を安全かつスムーズに進行し、施工後のトラブルを防止するため、大変お手数ですが以下の項目をご確認の上、チェックをお願いいたします。</p>
-
-            <form id="consentForm">
-                <div class="section-title">お色味・仕上がり・工事に関する重要事項</div>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">外壁の種類による色の見え方</span>・外壁の種類によって色の見え方が変わります。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">太陽の位置による色の見え方</span>・太陽の位置によって色の見え方がかわります。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">遮熱塗料の反射特性</span>・遮熱塗料は特に太陽光を反射するので見本の色より明るくなります。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">標準色ではない調色について</span>・標準色ではない調色を選ぶ場合は品番によっては何回塗ってもキレイに仕上がらない品番が御座います。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">調色選定時のメーカー差</span>・調色を選ぶ場合はメーカーによって色が若干の違いが御座います。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">カラー変更に関する追加費用</span>・塗料発注後の色の変更及び塗装後の色の変更は追加金が発生します。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">高圧洗浄時のサッシ・窓まわり</span>・極稀に高圧洗浄で窓の隙間から水が入る場合があるのでご確認ください。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">既設の施工不良に伴う工事変更</span>・新築時の施工不良または前回塗装の施工不良によりやむなく工事の内容を変更する場合が御座います。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">トップライト・カーポート等の洗浄限界</span>・トップライトの汚れ及びカーポート等の汚れは高圧洗浄や洗剤でのお掃除でも汚れが落ちない場合が御座います。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">経年劣化による私物の破損免責</span>・長期間の紫外線のダメージによる劣化で極稀に施主様の私物が破損する場合が御座います。(物干し竿やプラスチック等)</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">配送トラブルによる工期延期</span>・塗料の配送トラブル及び配送遅延によりやむなく工事が数日止まる場合が御座います。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text"><span class="item-title">工期の長さによる金額の固定</span>・工期の長さによって金額の増減はありません。</div></label>
-
-                <div class="section-title">現場の管理・施工に関する重要事項</div>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・工事が始まる頃に材料を塗料メーカーから発送いたします。（ご自宅の敷地内に保管しておいてください）</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・工事で発生しましたゴミなどは足場解体後に行います。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・雨の日はできる作業を行うか、様子を見て工事を行うか、休工になる場合があります。いずれも柔軟な対応させて頂きます。※当日の朝判断もあります。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・工事中の資材などは基本的にはお客様の敷地で工事中管理させて頂きます。ご自宅のガレージやスペースをネタ場（作業場）としてお借りします。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・余ったペンキは缶やペットボトルに入れて残しております。（陽の当たりづらい場所で保管お願いいたします。）</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・日曜日は状況に応じて工事を進めさせて頂く場合があります。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・高圧洗浄をする際に土間のタイルやガレージ等のコンクリートまで洗浄致します。濡れたり汚れたら困るものはない状態にして下さい。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・玄関の土間タイルがすでに割れていた場合は高圧洗浄すると割れる可能性があります。当日判断で洗浄するかしないかを判断させていただく場合が御座います。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・外壁材がかなり劣化していた場合、高圧洗浄すると傷んだ塗膜が飛ぶ(剥がれる)場合が御座います。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・付帯部塗装や防水工事の際にはシンナーの臭いが室内に入る場合がございます。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・防水工事を行った場合、施工後は撥水されてるので雨が防水の上に溜まります。また、雨の後は滑りやすくなっております。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・サイディングの外壁材の場合、ボードの湿気を逃がすため若干隙間をあけて施工致します。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・雨の日が続いてしまうと想定の工期が伸びることが予想されます。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・工事は基本的にはAM8：30～日暮れ頃まで行いますが、施工の内容によっては朝だけの作業であったり午後の少しだけの作業の場合があります。</div></label>
-
-                <div class="section-title">スケジュール・移動に関する重要事項</div>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・足場を組んだ翌日には高圧洗浄を致しますのでシャッターや雨戸は動くようにして頂き、ガラスの窓は鍵をしっかりかけて下さい。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・工事が始まるとほとんどの期間は室内干しのご協力をお願い致します。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・洗浄の日は散水栓のハンドルはつけた状態にしておいて下さい。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・足場組みの日は朝8時までには車の移動をお願い致します。</div></label>
-                <label class="item"><input type="checkbox" class="required-check"><div class="item-text">・高圧洗浄の日は朝8時半までには車の移動をお願い致します。</div></label>
-
-                <div class="section-title danger">安全に関する最重要事項</div>
-                <label class="danger-item"><input type="checkbox" class="required-check"><div class="danger-text">大変危険なので足場には登らないようにして下さい。</div></label>
-
-                <div class="section-title">施工主様ご署名</div>
-                <div style="margin-top:15px;">
-                    <label style="font-size:14px; font-weight:700;">ご署名（お名前をご入力ください）</label>
-                    <input type="text" id="clientName" class="input-name" required>
-                </div>
-
-                <div style="margin-top:20px;">
-                    <label style="font-size:14px; font-weight:700;">手書きサイン（枠内に指やペンでご署名ください）</label>
-                    <div class="signature-area">
-                        <canvas id="signaturePad"></canvas>
-                        <img id="compiledSignatureImg" alt="手書きサイン">
-                        <button type="button" class="canvas-btn" id="clearBtn">サインを消す</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div class="btn-group">
-            <button type="button" id="saveBtn" class="action-btn" disabled>同意して保存する</button>
-        </div>
-    </section>
-
-    <section id="listScreen" class="screen">
-        <div class="list-header">
-            <h2>保存済み同意書</h2>
-            <label class="import-btn" for="importInput">PDFを取り込む</label>
-            <input type="file" id="importInput" accept="application/pdf" hidden>
-        </div>
-        <div id="agreementList"></div>
-    </section>
-</main>
-
-<div class="toast" id="toast"></div>
-
-<script>
     const tabBtns = document.querySelectorAll('.tab-btn');
     const screens = { form: document.getElementById('formScreen'), list: document.getElementById('listScreen') };
     tabBtns.forEach(btn => {
@@ -290,7 +71,7 @@
             return;
         }
         listEl.innerHTML = currentItems.map(item => `
-            <div class="agreement-card">
+            <div class="agreement-card" data-id="${item.id}" style="cursor:pointer;">
                 <div>
                     <div class="agreement-name">${escapeHtml(item.clientName)} 様</div>
                     <div class="agreement-date">${new Date(item.createdAt).toLocaleString('ja-JP')}</div>
@@ -302,8 +83,11 @@
             </div>
         `).join('');
 
-        listEl.querySelectorAll('.share-btn').forEach(btn => btn.addEventListener('click', () => shareItem(btn.dataset.id)));
-        listEl.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', () => deleteItem(btn.dataset.id)));
+        listEl.querySelectorAll('.agreement-card').forEach(card => {
+            card.addEventListener('click', () => viewItem(card.dataset.id));
+        });
+        listEl.querySelectorAll('.share-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); shareItem(btn.dataset.id); }));
+        listEl.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); deleteItem(btn.dataset.id); }));
     }
 
     function escapeHtml(str) {
@@ -312,9 +96,67 @@
         return div.innerHTML;
     }
 
+    function blobToBase64(blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    }
+
+    /* タップしてPDFを開く */
+    async function viewItem(id) {
+        const item = currentItems.find(i => String(i.id) === String(id));
+        if (!item) return;
+
+        if (window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform()) {
+            try {
+                const base64Data = await blobToBase64(item.blob);
+                const writeResult = await Capacitor.Plugins.Filesystem.writeFile({
+                    path: item.filename,
+                    data: base64Data,
+                    directory: 'CACHE'
+                });
+                await Capacitor.Plugins.FileOpener.open({
+                    filePath: writeResult.uri,
+                    contentType: 'application/pdf'
+                });
+            } catch (e) {
+                showToast('PDFを開けませんでした');
+            }
+            return;
+        }
+
+        // 通常のブラウザではタブで開く
+        const url = URL.createObjectURL(item.blob);
+        window.open(url, '_blank');
+    }
+
     async function shareItem(id) {
         const item = currentItems.find(i => String(i.id) === String(id));
         if (!item) return;
+
+        if (window.Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform()) {
+            try {
+                const base64Data = await blobToBase64(item.blob);
+                const writeResult = await Capacitor.Plugins.Filesystem.writeFile({
+                    path: item.filename,
+                    data: base64Data,
+                    directory: 'CACHE'
+                });
+                await Capacitor.Plugins.Share.share({
+                    title: item.filename,
+                    text: item.clientName + ' 様の同意書PDFです。',
+                    url: writeResult.uri,
+                    dialogTitle: '同意書を共有'
+                });
+            } catch (e) {
+                showToast('共有に失敗しました');
+            }
+            return;
+        }
+
         const file = new File([item.blob], item.filename, { type: 'application/pdf' });
         try {
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -323,7 +165,7 @@
                 showToast('この端末は直接共有に対応していません');
             }
         } catch (e) {
-            /* ユーザーがキャンセルした場合などはここに来る（エラー表示不要） */
+            /* キャンセル時は何もしない */
         }
     }
 
@@ -484,6 +326,3 @@
         saveBtn.innerText = "同意して保存する";
         checkFormValidity();
     });
-</script>
-</body>
-</html>
